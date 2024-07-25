@@ -29,7 +29,7 @@ public class Product {
     private String name;
     @ManyToOne
     private Categories categories;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "orders_product",
             joinColumns = @JoinColumn(name = "product_id"),

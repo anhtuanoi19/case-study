@@ -1,20 +1,21 @@
 package com.example.casestudy3.service.impl;
 
-import com.example.casestudy3.dto.request.OrdersDto;
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Orders;
 import com.example.casestudy3.entity.Product;
-import com.example.casestudy3.exception.AppException;
-import com.example.casestudy3.exception.ErrorCode;
-import com.example.casestudy3.mapper.ProductMapper;
+import com.example.casestudy3.repository.OrdersRepository;
 import com.example.casestudy3.repository.ProductRepository;
 import com.example.casestudy3.service.IProductService;
+import com.example.casestudy3.tranferDatas.ProductMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,19 +24,49 @@ public class ProductService implements IProductService {
     @Autowired
     private ProductRepository productRepository;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    @Autowired
+    private OrdersRepository ordersRepository;
 
     @Override
     public ApiResponse<ProductDto> create(ProductDto productDto) {
-        Product product = productMapper.toEntity(productDto);
-        product = productRepository.save(product);
-        ProductDto result = productMapper.toDto(product);
-
         ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(result);
-        apiResponse.setMessage(result != null ? "Tạo sản phẩm thành công" : "Lỗi trong quá trình tạo sản phẩm");
+        try {
+            // Chuyển đổi DTO thành Entity
+            Product product = productMapper.toEntity(productDto);
+
+            // Kiểm tra và lưu các đơn hàng liên quan
+            Set<Orders> orders = product.getOrders();
+            if (orders != null) {
+                for (Orders order : orders) {
+                    if (order.getId() != null) {
+                        Orders existingOrder = ordersRepository.findById(order.getId()).get();
+                        // Gán lại thực thể đã tồn tại
+                        order = existingOrder;
+                    } else {
+                        // Nếu chưa có id, lưu đơn hàng
+                        order = ordersRepository.save(order);
+                    }
+                }
+                product.setOrders(orders);
+            }
+
+            // Lưu sản phẩm
+            product = productRepository.save(product);
+
+            // Chuyển đổi lại thành DTO
+            ProductDto result = productMapper.toDto(product);
+
+            apiResponse.setResult(result);
+            apiResponse.setMessage("Tạo sản phẩm thành công");
+        } catch (DataIntegrityViolationException e) {
+            apiResponse.setMessage("Lỗi trong quá trình tạo sản phẩm: " + e.getMessage());
+        } catch (Exception e) {
+            apiResponse.setMessage("Đã xảy ra lỗi: " + e.getMessage());
+        }
 
         return apiResponse;
     }
+
 
     @Override
     public ApiResponse<ProductDto> update(ProductDto productDto, UUID id) {

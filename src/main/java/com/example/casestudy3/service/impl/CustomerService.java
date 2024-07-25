@@ -3,9 +3,9 @@ package com.example.casestudy3.service.impl;
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Customer;
-import com.example.casestudy3.mapper.CustomerMapper;
 import com.example.casestudy3.repository.CustomerRepository;
 import com.example.casestudy3.service.ICustomerService;
+import com.example.casestudy3.tranferDatas.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

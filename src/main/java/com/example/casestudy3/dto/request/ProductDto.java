@@ -11,6 +11,5 @@ public class ProductDto {
     private UUID id;
     private String name;
     private Categories categories;
-    private Set<Orders> orders;
     private String status;
 }

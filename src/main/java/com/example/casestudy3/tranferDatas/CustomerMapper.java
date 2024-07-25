@@ -1,4 +1,4 @@
-package com.example.casestudy3.mapper;
+package com.example.casestudy3.tranferDatas;
 
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.entity.Customer;
