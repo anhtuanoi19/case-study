@@ -21,7 +21,7 @@ public class Product {
 //    @TableGenerator(name = "table_generator", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "MY_ENTITY_ID", allocationSize = 1)
 //    private Long id;
 
-//    Sử dụng một bảng đặc biệt trong cơ sở dữ liệu để tạo giá trị khóa chính.
+    //    Sử dụng một bảng đặc biệt trong cơ sở dữ liệu để tạo giá trị khóa chính.
 //    Chiến lược này độc lập với các tính năng tự động tăng giá trị của cơ sở dữ liệu
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,7 +32,7 @@ public class Product {
     @ManyToOne
     @JoinColumn
     private Categories categories;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "orders_product",
             joinColumns = @JoinColumn(name = "product_id"),

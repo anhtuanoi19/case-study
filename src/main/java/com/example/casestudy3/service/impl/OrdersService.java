@@ -3,7 +3,7 @@ package com.example.casestudy3.service.impl;
 import com.example.casestudy3.dto.request.OrdersDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Orders;
-import com.example.casestudy3.mapper.OrdersMapper;
+import com.example.casestudy3.tranferDatas.OrdersMapper;
 import com.example.casestudy3.repository.OrdersRepository;
 import com.example.casestudy3.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,13 @@ import java.util.UUID;
 public class OrdersService implements IOrdersService {
     @Autowired
     private OrdersRepository ordersRepository;
+    private final OrdersMapper ordersMapper = OrdersMapper.INSTANCE;
 
     @Override
     public ApiResponse<OrdersDto> create(OrdersDto ordersDto) {
-        Orders orders = OrdersMapper.INSTANCE.toEntity(ordersDto);
+        Orders orders = ordersMapper.toEntity(ordersDto);
         orders = ordersRepository.save(orders);
-        OrdersDto result = OrdersMapper.INSTANCE.toDto(orders);
+        OrdersDto result = ordersMapper.toDto(orders);
         ApiResponse<OrdersDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;
@@ -35,10 +36,10 @@ public class OrdersService implements IOrdersService {
             apiResponse.setMessage("Order not found");
             return apiResponse;
         }
-        Orders orders = OrdersMapper.INSTANCE.toEntity(ordersDto);
+        Orders orders = ordersMapper.toEntity(ordersDto);
         orders.setId(id);
         orders = ordersRepository.save(orders);
-        OrdersDto result = OrdersMapper.INSTANCE.toDto(orders);
+        OrdersDto result = ordersMapper.toDto(orders);
         ApiResponse<OrdersDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;
@@ -47,7 +48,7 @@ public class OrdersService implements IOrdersService {
     @Override
     public ApiResponse<List<OrdersDto>> getAll() {
         List<Orders> ordersList = ordersRepository.findAll();
-        List<OrdersDto> ordersDtoList = OrdersMapper.INSTANCE.toDtoList(ordersList);
+        List<OrdersDto> ordersDtoList = ordersMapper.toDtoList(ordersList);
         ApiResponse<List<OrdersDto>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(ordersDtoList);
         return apiResponse;
@@ -61,7 +62,7 @@ public class OrdersService implements IOrdersService {
             apiResponse.setMessage("Order not found");
             return apiResponse;
         }
-        OrdersDto result = OrdersMapper.INSTANCE.toDto(orders);
+        OrdersDto result = ordersMapper.toDto(orders);
         ApiResponse<OrdersDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;

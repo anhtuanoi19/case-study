@@ -3,7 +3,7 @@ package com.example.casestudy3.service.impl;
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Customer;
-import com.example.casestudy3.mapper.CustomerMapper;
+import com.example.casestudy3.tranferDatas.CustomerMapper;
 import com.example.casestudy3.repository.CustomerRepository;
 import com.example.casestudy3.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,14 @@ public class CustomerService implements ICustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
     @Override
     public ApiResponse<CustomerDto> create(CustomerDto customerDto) {
-        Customer customer = CustomerMapper.INSTANCE.toEntity(customerDto);
+        Customer customer = customerMapper.toEntity(customerDto);
         customer = customerRepository.save(customer);
-        CustomerDto result = CustomerMapper.INSTANCE.toDto(customer);
-        ApiResponse<CustomerDto> apiResponse = new ApiResponse<>();
+        CustomerDto result = customerMapper.toDto(customer);
+        ApiResponse<CustomerDto> apiResponse = new ApiResponse<CustomerDto>();
         apiResponse.setResult(result);
         return apiResponse;
     }
@@ -36,10 +37,10 @@ public class CustomerService implements ICustomerService {
             apiResponse.setMessage("Customer not found");
             return apiResponse;
         }
-        Customer customer = CustomerMapper.INSTANCE.toEntity(customerDto);
+        Customer customer = customerMapper.toEntity(customerDto);
         customer.setId(id);
         customer = customerRepository.save(customer);
-        CustomerDto result = CustomerMapper.INSTANCE.toDto(customer);
+        CustomerDto result = customerMapper.toDto(customer);
         ApiResponse<CustomerDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;
@@ -48,7 +49,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public ApiResponse<List<CustomerDto>> getAll() {
         List<Customer> customerList = customerRepository.findAll();
-        List<CustomerDto> customerDtoList = CustomerMapper.INSTANCE.toDtoList(customerList);
+        List<CustomerDto> customerDtoList = customerMapper.toDtoList(customerList);
         ApiResponse<List<CustomerDto>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(customerDtoList);
         return apiResponse;
@@ -62,7 +63,7 @@ public class CustomerService implements ICustomerService {
             apiResponse.setMessage("Customer not found");
             return apiResponse;
         }
-        CustomerDto result = CustomerMapper.INSTANCE.toDto(customer);
+        CustomerDto result = customerMapper.toDto(customer);
         ApiResponse<CustomerDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;

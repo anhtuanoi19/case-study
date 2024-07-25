@@ -7,7 +7,7 @@ import com.example.casestudy3.entity.Orders;
 import com.example.casestudy3.entity.Product;
 import com.example.casestudy3.exception.AppException;
 import com.example.casestudy3.exception.ErrorCode;
-import com.example.casestudy3.mapper.ProductMapper;
+import com.example.casestudy3.tranferDatas.ProductMapper;
 import com.example.casestudy3.repository.ProductRepository;
 import com.example.casestudy3.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class ProductService implements IProductService {
         product = productRepository.save(product);
         ProductDto result = productMapper.toDto(product);
 
-        ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
+        ApiResponse<ProductDto> apiResponse = new ApiResponse<ProductDto>();
         apiResponse.setResult(result);
-        apiResponse.setMessage(result != null ? "Tạo sản phẩm thành công" : "Lỗi trong quá trình tạo sản phẩm");
+        apiResponse.setMessage(result != null ? "Đã tạo sản phẩm thành công" : "Lỗi trong quá trình tạo sản phẩm");
 
         return apiResponse;
     }

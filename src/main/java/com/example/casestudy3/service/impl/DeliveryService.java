@@ -5,10 +5,9 @@ import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Delivery;
 import com.example.casestudy3.exception.AppException;
 import com.example.casestudy3.exception.ErrorCode;
-import com.example.casestudy3.mapper.DeliveryMapper;
+import com.example.casestudy3.tranferDatas.DeliveryMapper;
 import com.example.casestudy3.repository.DeliveryRepository;
 import com.example.casestudy3.service.IDeliveryService;
-import com.example.casestudy3.tranferDatas.TranferDatas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +21,13 @@ public class DeliveryService implements IDeliveryService {
 
     @Autowired
     private DeliveryRepository deliveryRepository;
+    private final DeliveryMapper deliveryMapper = DeliveryMapper.INSTANCE;
 
     @Override
     public ApiResponse<DeliveryDto> create(DeliveryDto deliveryDto) {
-        Delivery delivery = DeliveryMapper.INSTANCE.toEntity(deliveryDto);
+        Delivery delivery = deliveryMapper.toEntity(deliveryDto);
         delivery = deliveryRepository.save(delivery);
-        DeliveryDto result = DeliveryMapper.INSTANCE.toDto(delivery);
+        DeliveryDto result = deliveryMapper.toDto(delivery);
         ApiResponse<DeliveryDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;
@@ -41,10 +41,10 @@ public class DeliveryService implements IDeliveryService {
             apiResponse.setMessage("Delivery not found");
             return apiResponse;
         }
-        Delivery delivery = DeliveryMapper.INSTANCE.toEntity(deliveryDto);
+        Delivery delivery = deliveryMapper.toEntity(deliveryDto);
         delivery.setId(id);
         delivery = deliveryRepository.save(delivery);
-        DeliveryDto result = DeliveryMapper.INSTANCE.toDto(delivery);
+        DeliveryDto result = deliveryMapper.toDto(delivery);
         ApiResponse<DeliveryDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;
@@ -53,7 +53,7 @@ public class DeliveryService implements IDeliveryService {
     @Override
     public ApiResponse<List<DeliveryDto>> getAll() {
         List<Delivery> deliveryList = deliveryRepository.findAll();
-        List<DeliveryDto> deliveryDtoList = DeliveryMapper.INSTANCE.toDtoList(deliveryList);
+        List<DeliveryDto> deliveryDtoList = deliveryMapper.toDtoList(deliveryList);
         ApiResponse<List<DeliveryDto>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(deliveryDtoList);
         return apiResponse;
@@ -67,7 +67,7 @@ public class DeliveryService implements IDeliveryService {
             apiResponse.setMessage("Delivery not found");
             return apiResponse;
         }
-        DeliveryDto result = DeliveryMapper.INSTANCE.toDto(delivery);
+        DeliveryDto result = deliveryMapper.toDto(delivery);
         ApiResponse<DeliveryDto> apiResponse = new ApiResponse<>();
         apiResponse.setResult(result);
         return apiResponse;

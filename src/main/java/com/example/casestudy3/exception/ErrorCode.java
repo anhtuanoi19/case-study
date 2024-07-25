@@ -12,7 +12,7 @@ public enum ErrorCode {
     CATEGORY_NOT_EXISTED(1002, "Không tìm thấy Category nào", HttpStatus.NOT_FOUND),
     CATEGORY_EXISTED(1003, "Mã danh mục không được trùng", HttpStatus.NOT_FOUND),
     CATEGORY_DELETE(1004, "Xóa thất bại",HttpStatus.BAD_REQUEST),
-
+    PRODUCT_DELETE(1005, "Xóa PRODUCT thất bại",HttpStatus.BAD_REQUEST),
 
     ;
 
