@@ -1,5 +1,6 @@
 package com.example.casestudy3.dto.response;
 
+import com.example.casestudy3.dto.request.DeliveryDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 @Data
@@ -12,6 +13,7 @@ public class ApiResponse<T> {
     private String message;
     private T result;
     private String url;
+
 
     public int getCode() {
         return code;

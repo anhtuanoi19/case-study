@@ -1,42 +1,40 @@
 package com.example.casestudy3.service.impl;
 
+import com.example.casestudy3.dto.request.CustomerDto;
+import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Customer;
-import com.example.casestudy3.service.IService;
+import com.example.casestudy3.service.ICustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CustomerService implements IService<Customer> {
+public class CustomerService implements ICustomerService {
+
 
     @Override
-    public Customer create(Customer customer) {
+    public ApiResponse<CustomerDto> create(CustomerDto customerDto) {
         return null;
     }
 
     @Override
-    public Customer update(Customer customer, UUID id) {
+    public ApiResponse<CustomerDto> update(CustomerDto customerDto, UUID id) {
         return null;
     }
 
     @Override
-    public List<Customer> getAll() {
+    public ApiResponse<List<CustomerDto>> getAll() {
         return null;
     }
 
     @Override
-    public Customer findById(UUID id) {
+    public ApiResponse<CustomerDto> findById(UUID id) {
         return null;
     }
 
     @Override
-    public Boolean delete(UUID id) {
-        return null;
-    }
-
-    @Override
-    public List<Customer> findByName(String name) {
+    public ApiResponse<Boolean> delete(UUID id) {
         return null;
     }
 }
