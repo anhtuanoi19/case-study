@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public interface ICategoryService {
     ApiResponse<CategoryDto> create(CategoryDto categoryDto);
-    ApiResponse<CategoryDto> update(CategoryDto categoryDto, Long id);
+    ApiResponse<CategoryDto> update(CategoryDto categoryDto, UUID id);
     ApiResponse<List<CategoryDto>> getAll();
-    ApiResponse<CategoryDto> findById(Long id);
-    ApiResponse<Boolean> delete(Long id);
+    ApiResponse<CategoryDto> findById(UUID id);
+    ApiResponse<Boolean> delete(UUID id);
 }

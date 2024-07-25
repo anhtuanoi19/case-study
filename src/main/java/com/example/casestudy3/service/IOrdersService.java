@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public interface IOrdersService {
     ApiResponse<OrdersDto> create(OrdersDto ordersDto);
-    ApiResponse<OrdersDto> update(OrdersDto ordersDto, Long id);
+    ApiResponse<OrdersDto> update(OrdersDto ordersDto, UUID id);
     ApiResponse<List<OrdersDto>> getAll();
-    ApiResponse<OrdersDto> findById(Long id);
-    ApiResponse<Boolean> delete(Long id);
+    ApiResponse<OrdersDto> findById(UUID id);
+    ApiResponse<Boolean> delete(UUID id);
 }

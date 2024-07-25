@@ -16,12 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "OrdersRepository")
 public class Orders {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-//    @SequenceGenerator(name = "my_sequence", sequenceName = "MY_SEQUENCE", allocationSize = 1)
-//    private Long id;
-//    Sử dụng một sequence object trong cơ sở dữ liệu để tạo
-//    giá trị cho khóa chính. Thường được sử dụng với các cơ sở dữ liệu như Oracle, PostgreSQL
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
