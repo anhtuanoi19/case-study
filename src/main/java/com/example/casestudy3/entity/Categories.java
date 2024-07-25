@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -25,6 +26,9 @@ public class Categories {
     private String name;
     private String code;
     private Integer status;
+
+    @OneToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private List<Product> products;
 
 
 }
