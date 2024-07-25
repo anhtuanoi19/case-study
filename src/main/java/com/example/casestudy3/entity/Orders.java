@@ -14,12 +14,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "OrdersRepository")
+@Table(name = "Orders_repository")
 public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
+    @Column(name = "order_date")
     private Date orderDate;
     @ManyToOne
     private Customer customer;

@@ -25,9 +25,12 @@ public class Product {
 //    Chiến lược này độc lập với các tính năng tự động tăng giá trị của cơ sở dữ liệu
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
+    @Column(name = "name")
     private String name;
     @ManyToOne
+    @JoinColumn
     private Categories categories;
     @ManyToMany
     @JoinTable(
