@@ -16,13 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "Product")
 public class Product {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "table_generator")
-//    @TableGenerator(name = "table_generator", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "MY_ENTITY_ID", allocationSize = 1)
-//    private Long id;
-
-    //    Sử dụng một bảng đặc biệt trong cơ sở dữ liệu để tạo giá trị khóa chính.
-//    Chiến lược này độc lập với các tính năng tự động tăng giá trị của cơ sở dữ liệu
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -32,7 +25,7 @@ public class Product {
     @ManyToOne
     @JoinColumn
     private Categories categories;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "orders_product",
             joinColumns = @JoinColumn(name = "product_id"),

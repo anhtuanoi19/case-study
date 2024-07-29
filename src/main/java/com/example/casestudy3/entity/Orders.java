@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -28,4 +29,6 @@ public class Orders {
     @ManyToOne
     private Delivery delivery;
 
+    @ManyToMany(mappedBy = "orders", cascade = CascadeType.MERGE)
+    private Set<Product> products;
 }

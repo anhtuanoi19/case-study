@@ -1,15 +1,12 @@
 package com.example.casestudy3.service.impl;
 
-import com.example.casestudy3.dto.request.OrdersDto;
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
-import com.example.casestudy3.entity.Orders;
 import com.example.casestudy3.entity.Product;
-import com.example.casestudy3.exception.AppException;
-import com.example.casestudy3.exception.ErrorCode;
-import com.example.casestudy3.tranferDatas.ProductMapper;
 import com.example.casestudy3.repository.ProductRepository;
 import com.example.casestudy3.service.IProductService;
+import com.example.casestudy3.tranferDatas.ProductMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +35,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public ApiResponse<ProductDto> update(ProductDto productDto, UUID id) {
         ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
 
@@ -45,9 +43,12 @@ public class ProductService implements IProductService {
             apiResponse.setMessage("Cập nhật thất bại");
         }
 
-        Product product = productMapper.toEntity(productDto);
-        product.setId(id);
-        product = productRepository.save(product);
+        Product product = productRepository.findById(id).get();
+        if (product != null) {
+            productMapper.updateEntityFromDto(productDto, product);
+            product = productRepository.save(product);
+        }
+
         ProductDto result = productMapper.toDto(product);
 
         apiResponse.setResult(result);
