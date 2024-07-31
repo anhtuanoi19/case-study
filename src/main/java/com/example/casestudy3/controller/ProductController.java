@@ -2,9 +2,7 @@ package com.example.casestudy3.controller;
 
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
-import com.example.casestudy3.entity.Product;
 import com.example.casestudy3.service.IProductService;
-import com.example.casestudy3.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,11 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
+
+    @GetMapping("test-transaction")
+    public void createProduct() {
+        productService.createProduct();
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<ProductDto>> createProduct(@RequestBody ProductDto productDto) {

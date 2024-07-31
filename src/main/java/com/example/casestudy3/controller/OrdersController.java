@@ -17,6 +17,11 @@ public class OrdersController {
     @Autowired
     private IOrdersService ordersService;
 
+    @GetMapping("test-transaction")
+    public void createOrders() throws Exception {
+        ordersService.createOrders();
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<OrdersDto>> create(@RequestBody OrdersDto ordersDto) {
         ApiResponse<OrdersDto> response = ordersService.create(ordersDto);

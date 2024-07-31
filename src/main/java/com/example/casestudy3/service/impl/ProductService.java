@@ -2,13 +2,17 @@ package com.example.casestudy3.service.impl;
 
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
+import com.example.casestudy3.entity.Log;
 import com.example.casestudy3.entity.Product;
+import com.example.casestudy3.repository.LogRepository;
 import com.example.casestudy3.repository.ProductRepository;
 import com.example.casestudy3.service.IProductService;
 import com.example.casestudy3.tranferDatas.ProductMapper;
-import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +23,41 @@ import java.util.stream.Collectors;
 public class ProductService implements IProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
+
+    @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
+    private LogRepository logRepository;
+
+    public void saveLog(String message) {
+        Log log = new Log();
+        log.setMessage(message);
+        logRepository.save(log);
+    }
+
+    @Transactional
+    public void createProduct() {
+        System.out.println("------ createProduct ------");
+        Product prod = new Product();
+        prod.setStatus("This is createProduct method.");
+        saveLog("Create Product");
+        productRepository.save(prod);
+
+//        try { // VD3 :
+//            // VD4:
+//            // VD5: Đóng try catch
+//            ordersService.createOrder();
+//        } catch (RuntimeException e) {
+//            System.out.println("Handle " + e.getMessage());
+//        }
+
+        ordersService.createOrder(); // VD5
+        throw new RuntimeException("Create Product RuntimeException"); // VD5
+    }
 
     @Override
     public ApiResponse<ProductDto> create(ProductDto productDto) {
@@ -35,26 +73,30 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    @Transactional(Transactional.TxType.REQUIRED)
     public ApiResponse<ProductDto> update(ProductDto productDto, UUID id) {
-        ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
+        try {
+            ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
 
-        if (!productRepository.existsById(id)) {
-            apiResponse.setMessage("Cập nhật thất bại");
+            if (!productRepository.existsById(id)) {
+                apiResponse.setMessage("Cập nhật thất bại");
+            }
+
+            Product product = productRepository.findById(id).get();
+            if (product != null) {
+                productMapper.updateEntityFromDto(productDto, product);
+                product = productRepository.save(product);
+            }
+
+            ProductDto result = productMapper.toDto(product);
+
+            apiResponse.setResult(result);
+            apiResponse.setMessage(result != null ? "Cập nhật sản phẩm thành công" : "Lỗi trong quá trình cập nhật sản phẩm");
+
+            return apiResponse;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
         }
-
-        Product product = productRepository.findById(id).get();
-        if (product != null) {
-            productMapper.updateEntityFromDto(productDto, product);
-            product = productRepository.save(product);
-        }
-
-        ProductDto result = productMapper.toDto(product);
-
-        apiResponse.setResult(result);
-        apiResponse.setMessage(result != null ? "Cập nhật sản phẩm thành công" : "Lỗi trong quá trình cập nhật sản phẩm");
-
-        return apiResponse;
     }
 
     @Override
