@@ -3,6 +3,7 @@ package com.example.casestudy3.controller;
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.service.ICustomerService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class CustomerController {
     private ICustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CustomerDto>> create(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ApiResponse<CustomerDto>> create(@RequestBody @Valid CustomerDto customerDto) {
         ApiResponse<CustomerDto> response = customerService.create(customerDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
