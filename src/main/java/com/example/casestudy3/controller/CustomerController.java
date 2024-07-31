@@ -3,9 +3,11 @@ package com.example.casestudy3.controller;
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.service.ICustomerService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/customers")
+@Validated
 public class CustomerController {
 
     @Autowired
@@ -39,7 +42,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<CustomerDto>> findById(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse<CustomerDto>> findById(@PathVariable @NotNull(message = "{ST003}") UUID id) {
         ApiResponse<CustomerDto> response = customerService.findById(id);
         return response.getResult() == null
                 ? new ResponseEntity<>(response, HttpStatus.NOT_FOUND)

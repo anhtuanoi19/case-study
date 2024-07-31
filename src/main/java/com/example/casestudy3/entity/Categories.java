@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "Categories", uniqueConstraints = @UniqueConstraint(columnNames = {"code"}))
+@Table(name = "Categories")
 @JsonIgnoreProperties("{name}")
 public class Categories {
     //Dùng UUID (Universally Unique Identifier) để tạo giá trị khóa chính.
@@ -23,7 +23,6 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @Column(name = "code")
     private String code;
     private Integer status;
 
