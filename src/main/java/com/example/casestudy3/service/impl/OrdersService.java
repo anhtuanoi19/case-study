@@ -4,6 +4,8 @@ import com.example.casestudy3.dto.request.OrdersDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Log;
 import com.example.casestudy3.entity.Orders;
+import com.example.casestudy3.exception.CustomSQLException;
+import com.example.casestudy3.exception.ErrorCode;
 import com.example.casestudy3.repository.LogRepository;
 import com.example.casestudy3.repository.OrdersRepository;
 import com.example.casestudy3.service.IOrdersService;
@@ -60,9 +62,10 @@ public class OrdersService implements IOrdersService {
             saveLog("2 This is createOrder method with runtime exception");
             ordersRepository.save(order);
 
-            throw new SQLException("DB tao loi roi");
+            throw new CustomSQLException(ErrorCode.SQL_ERROR);
         } catch (Exception e) {
             System.out.println("----------Here error---------------");
+            saveLog(ErrorCode.SQL_ERROR.getMessage());
         }
     }
 
