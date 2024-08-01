@@ -1,5 +1,7 @@
 package com.example.casestudy3.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +29,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
+
     @ManyToOne
     private Categories categories;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "orders_product",
             joinColumns = @JoinColumn(name = "product_id"),

@@ -26,4 +26,6 @@ public class Orders {
     @ManyToOne
     private Delivery delivery;
 
+
+
 }
