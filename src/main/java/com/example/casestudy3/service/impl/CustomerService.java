@@ -27,14 +27,30 @@ public class CustomerService implements ICustomerService {
         Customer customer = customerRepository.findById(customer_id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
+
         newOrders.setCustomer(customer);
         customer.getOrders().add(newOrders);
 
         customerRepository.save(customer);
+
+//        Customer customer = customerRepository.findById(customerId)
+//                .orElseThrow(() -> new RuntimeException("Customer not found"));
+//
+//        newOrder.setCustomer(customer);
+//        customer.getOrders().add(newOrder);
+//
+//        orderRepository.save(newOrder); // Save the new order
+//        customerRepository.save(customer); // Save the updated customer
+//
+//        return customer;
+    }
+
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     public Customer createCustomerWithOrder(Customer newCustomer) {
-        
+
         return customerRepository.save(newCustomer);
     }
 

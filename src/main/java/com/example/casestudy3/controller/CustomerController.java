@@ -40,6 +40,11 @@ public class CustomerController {
         return customerService.createCustomerWithOrder(newCustomer);
     }
 
+    @PostMapping("save")
+    public Customer save(@RequestBody Customer customer) {
+        return customerService.save(customer);
+    }
+
     @PutMapping("customer-update-order/{id}")
     public void createOrderByCustomer(@PathVariable("id") UUID customer_id, @RequestBody Orders newOrders) {
         customerService.createOrderByCustomer(customer_id, newOrders);

@@ -14,6 +14,8 @@ public interface ICustomerService {
 
     Customer createCustomerWithOrder(Customer newCustomer);
 
+    Customer save(Customer customer);
+
     void testLazyLoading(UUID customerId);
 
     ApiResponse<CustomerDto> create(CustomerDto customerDto);

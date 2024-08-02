@@ -31,7 +31,8 @@ public class Customer {
     private String adress;
     private Integer status;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonManagedReference
     private Set<Orders> orders = new HashSet<>();
+
 }
