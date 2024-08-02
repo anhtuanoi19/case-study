@@ -1,10 +1,12 @@
 package com.example.casestudy3.dto.request;
 
+import com.example.casestudy3.entity.Orders;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -19,4 +21,6 @@ public class CustomerDto {
     @NotNull(message = "{ST010}")
     private String adress;
     private Integer status;
+
+    private Set<Orders> orders;
 }

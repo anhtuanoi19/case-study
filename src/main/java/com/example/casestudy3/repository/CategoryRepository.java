@@ -1,5 +1,6 @@
 package com.example.casestudy3.repository;
 
+import com.example.casestudy3.dto.request.NameDto;
 import com.example.casestudy3.entity.Categories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,13 @@ public interface CategoryRepository extends JpaRepository<Categories, UUID> {
 
     @Query("SELECT c FROM Categories c WHERE c.status = :status")
     Page<Categories> findByStatus(@Param("status") Integer status, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT id, code from Categories")
+    Page<Categories> findAll(Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select p.name, c.name as categoryName from categories c " +
+            " join product p on c.id= p.categories_id ")
+    List<NameDto> joinCategoryAndProduct();
+
+
 }

@@ -4,7 +4,6 @@ import com.example.casestudy3.dto.request.OrdersDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Log;
 import com.example.casestudy3.entity.Orders;
-import com.example.casestudy3.exception.CustomSQLException;
 import com.example.casestudy3.exception.ErrorCode;
 import com.example.casestudy3.repository.LogRepository;
 import com.example.casestudy3.repository.OrdersRepository;
@@ -37,8 +36,8 @@ public class OrdersService implements IOrdersService {
 
 
     // VD1
-    @Transactional(propagation = Propagation.REQUIRES_NEW) // VD4
-    // @Transactional // VD3
+//    @Transactional(propagation = Propagation.REQUIRES_NEW) // VD4
+    @Transactional // VD3
     public void createOrder() {
 
         System.out.println("------ createOrder ------");
@@ -47,7 +46,8 @@ public class OrdersService implements IOrdersService {
         saveLog("This is createOrder method with runtime exception");
         ordersRepository.save(order);
 
-// VD5 //        throw new RuntimeException("Create Order RuntimeException");
+// VD5 //
+//        throw new RuntimeException("Create Order RuntimeException");
     }
 
     // VD2
@@ -62,7 +62,7 @@ public class OrdersService implements IOrdersService {
             saveLog("2 This is createOrder method with runtime exception");
             ordersRepository.save(order);
 
-            throw new CustomSQLException(ErrorCode.SQL_ERROR);
+            throw new SQLException();
         } catch (Exception e) {
             System.out.println("----------Here error---------------");
             saveLog(ErrorCode.SQL_ERROR.getMessage());
@@ -102,6 +102,7 @@ public class OrdersService implements IOrdersService {
         List<OrdersDto> ordersDtoList = ordersMapper.toDtoList(ordersList);
         ApiResponse<List<OrdersDto>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(ordersDtoList);
+        apiResponse.setMessage(ordersDtoList != null ? "Thanh cong order" : "That bai order");
         return apiResponse;
     }
 

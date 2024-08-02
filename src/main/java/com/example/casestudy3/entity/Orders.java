@@ -1,5 +1,6 @@
 package com.example.casestudy3.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,15 +18,18 @@ import java.util.UUID;
 @Entity
 @Table(name = "Orders_repository")
 public class Orders {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
     @Column(name = "order_date")
     private Date orderDate;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private Customer customer;
+
     @ManyToOne
     private Delivery delivery;
 

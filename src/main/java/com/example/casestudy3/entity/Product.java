@@ -25,7 +25,7 @@ public class Product {
     @ManyToOne
     @JoinColumn
     private Categories categories;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "orders_product",
             joinColumns = @JoinColumn(name = "product_id"),

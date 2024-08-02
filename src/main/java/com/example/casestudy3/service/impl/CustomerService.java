@@ -3,13 +3,16 @@ package com.example.casestudy3.service.impl;
 import com.example.casestudy3.dto.request.CustomerDto;
 import com.example.casestudy3.dto.response.ApiResponse;
 import com.example.casestudy3.entity.Customer;
+import com.example.casestudy3.entity.Orders;
 import com.example.casestudy3.repository.CustomerRepository;
 import com.example.casestudy3.service.ICustomerService;
 import com.example.casestudy3.tranferDatas.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -17,8 +20,43 @@ public class CustomerService implements ICustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
     private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
+    public void createOrderByCustomer(UUID customer_id, Orders newOrders) {
+        Customer customer = customerRepository.findById(customer_id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        newOrders.setCustomer(customer);
+        customer.getOrders().add(newOrders);
+
+        customerRepository.save(customer);
+    }
+
+    public Customer createCustomerWithOrder(Customer newCustomer) {
+        
+        return customerRepository.save(newCustomer);
+    }
+
+    public void testLazyLoading(UUID customerId) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+
+        Set<Orders> orders = new HashSet<>();
+
+        if (customer != null) {
+            System.out.println("Customer Name: " + customer.getName());
+
+            // Đến đây, chưa có truy vấn nào để tải orders
+            System.out.println("Orders: " + customer.getOrders().size());
+
+//          Trong console log, bạn sẽ thấy truy vấn cho bảng order chỉ được thực thi khi bạn gọi
+//          customer.getOrders().size().Trong console log, bạn sẽ thấy truy vấn cho bảng order chỉ được thực thi khi bạn gọi customer.getOrders().size().
+//          Truy vấn để tải orders sẽ được thực thi khi truy cập thuộc tính orders
+            for (Orders order : customer.getOrders()) {
+                System.out.println("Order Date is: " + order.getOrderDate());
+            }
+        }
+    }
 
     @Override
     public ApiResponse<CustomerDto> create(CustomerDto customerDto) {

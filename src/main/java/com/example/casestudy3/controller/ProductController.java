@@ -19,8 +19,13 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("test-transaction")
-    public void createProduct() {
+    public void createProduct() throws Exception {
         productService.createProduct();
+    }
+
+    @GetMapping("/p/{code}")
+    public void find(@PathVariable("code") String code) {
+        productService.find(code);
     }
 
     @PostMapping

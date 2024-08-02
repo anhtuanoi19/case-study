@@ -2,6 +2,7 @@ package com.example.casestudy3.service.impl;
 
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
+import com.example.casestudy3.entity.Categories;
 import com.example.casestudy3.entity.Log;
 import com.example.casestudy3.entity.Product;
 import com.example.casestudy3.repository.LogRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,7 +42,7 @@ public class ProductService implements IProductService {
     }
 
     @Transactional
-    public void createProduct() {
+    public void createProduct() throws Exception {
         System.out.println("------ createProduct ------");
         Product prod = new Product();
         prod.setStatus("This is createProduct method.");
@@ -56,12 +58,18 @@ public class ProductService implements IProductService {
 //        }
 
         ordersService.createOrder(); // VD5
-        throw new RuntimeException("Create Product RuntimeException"); // VD5
+        throw new FileNotFoundException("Nest");
+//        throw new RuntimeException("Create Product RuntimeException"); // VD5
     }
 
     @Override
     public ApiResponse<ProductDto> create(ProductDto productDto) {
-        Product product = productMapper.toEntity(productDto);
+//        Product product = productMapper.toEntity(productDto);
+        Product product = new Product();
+        Categories categories = new Categories();
+
+        categories = productDto.getCategories();
+        product.setCategories(categories);
         product = productRepository.save(product);
         ProductDto result = productMapper.toDto(product);
 
@@ -123,6 +131,12 @@ public class ProductService implements IProductService {
         apiResponse.setMessage(result != null ? "Lấy sản phẩm thành công" : "Sản phẩm không tồn tại");
 
         return apiResponse;
+    }
+
+    public List<Product> find(String code) {
+        List<Product> optionalProduct = productRepository.findByStatus(code);
+
+        return null;
     }
 
     @Override

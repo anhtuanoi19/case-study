@@ -42,7 +42,7 @@ public class OrdersController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("get-id/{id}")
     public ResponseEntity<ApiResponse<OrdersDto>> findById(@PathVariable UUID id) {
         ApiResponse<OrdersDto> response = ordersService.findById(id);
         return response.getResult() == null

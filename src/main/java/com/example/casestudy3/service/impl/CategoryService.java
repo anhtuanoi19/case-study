@@ -13,6 +13,10 @@ import com.example.casestudy3.tranferDatas.CategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,6 +105,26 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    public ApiResponse<Page<CategoryDto>> getAll(Integer number, Integer size) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        System.out.println("Fetching all meetings with pagination");
+        Pageable pageable = PageRequest.of(number, size);
+        Page<Categories> allCategors = categoryRepository.findAll(pageable);
+
+        if (allCategors.hasContent()) {
+            List<CategoryDto> categoryDTOList = categoryMapper.toDtoList(allCategors.getContent());
+            Page<CategoryDto> result = new PageImpl<>(categoryDTOList, pageable, allCategors.getTotalElements());
+
+
+            apiResponse.setResult(result);
+            apiResponse.setMessage(result != null ? "Thành công" : "Thất bại");
+            return apiResponse;
+        }
+        return null;
+    }
+
+    @Override
     public ApiResponse<Boolean> delete(UUID id) {
         if (!categoryRepository.existsById(id)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
@@ -111,6 +135,22 @@ public class CategoryService implements ICategoryService {
         apiResponse.setMessage("Category deleted successfully");
         return apiResponse;
     }
+
+//    public ApiResponse<List<NameDto>> getAll1() {
+//        ApiResponse apiResponse = new ApiResponse();
+//        List<Object[]> nameDtoList = categoryRepository.joinCategoryAndProduct();
+//
+//        List<NameDto> toNameDtoList = new ArrayList<>();
+//        for (int i = nameDtoList.size() - 1; i >= 0; i--) {
+//            NameDto nameDto = new NameDto();
+//            nameDto.setNameCategory((String) nameDtoList.get(i)[1]);
+//            nameDto.setName((String) nameDtoList.get(i)[0]);
+//            toNameDtoList.add(nameDto);
+//        }
+//
+//        apiResponse.setResult(toNameDtoList);
+//        return apiResponse;
+//    }
 
 
 }
