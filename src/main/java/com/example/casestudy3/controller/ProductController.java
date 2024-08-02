@@ -31,8 +31,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductDto>>> getAllProducts() {
-        ApiResponse<List<ProductDto>> response = productService.getAll();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        ApiResponse<List<ProductDto>> response = productService.getAllProducts();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

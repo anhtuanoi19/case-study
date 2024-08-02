@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface IProductService {
     ApiResponse<ProductDto> create(ProductDto productDto);
     ApiResponse<ProductDto> update(ProductDto productDto, UUID id);
-    ApiResponse<List<ProductDto>> getAll();
+    ApiResponse<List<ProductDto>> getAllProducts();
     ApiResponse<ProductDto> findById(UUID id);
     ApiResponse<Boolean> delete(UUID id);
 }

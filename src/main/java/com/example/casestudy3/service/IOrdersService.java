@@ -16,4 +16,8 @@ public interface IOrdersService {
     ApiResponse<List<OrdersDto>> getAll();
     ApiResponse<OrdersDto> findById(UUID id);
     ApiResponse<Boolean> delete(UUID id);
+    ApiResponse<OrdersDto> createOrder(OrdersDto orderDto, UUID customerId, UUID deliveryId);
+    ApiResponse<OrdersDto> createOrderNew(OrdersDto orderDto);
+    ApiResponse<OrdersDto> updateOrderNew(UUID id, OrdersDto ordersDto);
+    ApiResponse<OrdersDto> createOrderNew2(OrdersDto ordersDto);
 }

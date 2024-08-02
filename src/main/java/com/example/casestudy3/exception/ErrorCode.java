@@ -12,6 +12,9 @@ public enum ErrorCode {
     CATEGORY_NOT_EXISTED(1002, "Không tìm thấy Category nào", HttpStatus.NOT_FOUND),
     CATEGORY_EXISTED(1003, "Mã danh mục không được trùng", HttpStatus.NOT_FOUND),
     CATEGORY_DELETE(1004, "Xóa thất bại",HttpStatus.BAD_REQUEST),
+    DELIVERY_NOT_EXISTED(1005, "Không tìm thấy delivery nào", HttpStatus.NOT_FOUND),
+    CUSTOMER_NOT_EXISTED(1006, "Không tìm thấy khách hàng nào", HttpStatus.NOT_FOUND),
+
 
 
     ;

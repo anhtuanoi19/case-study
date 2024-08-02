@@ -2,14 +2,17 @@ package com.example.casestudy3.dto.request;
 
 import com.example.casestudy3.entity.Customer;
 import com.example.casestudy3.entity.Delivery;
+import com.example.casestudy3.entity.Product;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 @Data
 public class OrdersDto {
     private UUID id;
     private Date orderDate;
-    private Customer customer;
-    private Delivery delivery;
+    private CustomerDto customer;
+    private DeliveryDto delivery;
+    private Set<ProductDto> productIds;
 }

@@ -27,6 +27,7 @@ public class ProductService implements IProductService {
     @Autowired
     private OrdersRepository ordersRepository;
 
+
     @Override
     public ApiResponse<ProductDto> create(ProductDto productDto) {
         ApiResponse<ProductDto> apiResponse = new ApiResponse<>();
@@ -88,17 +89,19 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ApiResponse<List<ProductDto>> getAll() {
+    public ApiResponse<List<ProductDto>> getAllProducts() {
         List<Product> products = productRepository.findAll();
         List<ProductDto> productDtos = products.stream()
-                .map(productMapper::toDto)
+                .map(ProductMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
 
-        ApiResponse<List<ProductDto>> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(productDtos);
-        apiResponse.setMessage(!productDtos.isEmpty() ? "Lấy danh sách sản phẩm thành công" : "Không có sản phẩm nào");
+        ApiResponse<List<ProductDto>> response = new ApiResponse<>();
+        response.setCode(1000); // Success code
+        response.setMessage("Products retrieved successfully");
+        response.setResult(productDtos);
+        response.setUrl("/api/products"); // Optional, can be set if needed
 
-        return apiResponse;
+        return response;
     }
 
     @Override
