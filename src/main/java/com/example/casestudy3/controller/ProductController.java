@@ -2,6 +2,7 @@ package com.example.casestudy3.controller;
 
 import com.example.casestudy3.dto.request.ProductDto;
 import com.example.casestudy3.dto.response.ApiResponse;
+import com.example.casestudy3.entity.Product;
 import com.example.casestudy3.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,18 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("test-transaction")
-    public void createProduct() throws Exception {
-        productService.createProduct();
+    public String createProduct() throws Exception {
+        try {
+            return productService.createProduct();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @GetMapping("/p/{code}")
-    public void find(@PathVariable("code") String code) {
-        productService.find(code);
+    public List<Product> find(@PathVariable("code") String code) {
+        return productService.find(code);
     }
 
     @PostMapping

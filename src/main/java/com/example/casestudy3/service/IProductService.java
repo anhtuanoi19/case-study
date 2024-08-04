@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IProductService {
-    public void createProduct() throws Exception;
+    public String createProduct() throws Exception;
 
     public List<Product> find(String code);
 

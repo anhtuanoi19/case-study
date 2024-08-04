@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,24 +41,34 @@ public class ProductService implements IProductService {
     }
 
     @Transactional
-    public void createProduct() throws Exception {
-        System.out.println("------ createProduct ------");
-        Product prod = new Product();
-        prod.setStatus("This is createProduct method.");
-        saveLog("Create Product");
-        productRepository.save(prod);
+    public String createProduct() throws Exception {
+        try {
+            System.out.println("------ createProduct ------");
+            Product prod = new Product();
+            prod.setStatus("This is createProduct method.");
+            saveLog("Create Product");
+            productRepository.save(prod);
 
-//        try { // VD3 :
-//            // VD4:
-//            // VD5: Đóng try catch
-//            ordersService.createOrder();
-//        } catch (RuntimeException e) {
-//            System.out.println("Handle " + e.getMessage());
-//        }
+            try { // VD3 :
+                // VD4:
+                // VD5: Đóng try catch
+                ordersService.createOrder();
 
-        ordersService.createOrder(); // VD5
-        throw new FileNotFoundException("Nest");
-//        throw new RuntimeException("Create Product RuntimeException"); // VD5
+            } catch (RuntimeException e) {
+                System.out.println("Handle " + e.getMessage());
+
+            }
+
+            System.out.println("Thành công");
+            return "Thành công";
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+//        ordersService.createOrder(); // VD5
+//        throw new FileNotFoundException("Nest");
+////        throw new RuntimeException("Create Product RuntimeException"); // VD5
     }
 
     @Override
@@ -133,10 +142,11 @@ public class ProductService implements IProductService {
         return apiResponse;
     }
 
+    
     public List<Product> find(String code) {
         List<Product> optionalProduct = productRepository.findByStatus(code);
 
-        return null;
+        return optionalProduct;
     }
 
     @Override

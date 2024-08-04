@@ -47,7 +47,7 @@ public class OrdersService implements IOrdersService {
         ordersRepository.save(order);
 
 // VD5 //
-//        throw new RuntimeException("Create Order RuntimeException");
+        throw new RuntimeException("Create Order RuntimeException");
     }
 
     // VD2

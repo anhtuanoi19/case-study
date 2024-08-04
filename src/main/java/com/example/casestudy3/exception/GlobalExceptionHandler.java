@@ -12,22 +12,22 @@ public class GlobalExceptionHandler {
     // Quản lý toàn bộ exception
 
     // Exception
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingUnwantedException(Exception exception) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(ErrorCode.UNWANTED_EXCEPTION.getCode());
-        apiResponse.setMessage(ErrorCode.UNWANTED_EXCEPTION.getMessage());
-        return ResponseEntity.internalServerError().body(apiResponse);
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    ResponseEntity<ApiResponse> handlingUnwantedException(Exception exception) {
+//        ApiResponse apiResponse = new ApiResponse();
+//        apiResponse.setCode(ErrorCode.UNWANTED_EXCEPTION.getCode());
+//        apiResponse.setMessage(ErrorCode.UNWANTED_EXCEPTION.getMessage());
+//        return ResponseEntity.internalServerError().body(apiResponse);
+//    }
 
     // RuntimeException
-    @ExceptionHandler(value = RuntimeException.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException runtimeException) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(ErrorCode.RUNTIME_ERROR.getCode());
-        apiResponse.setMessage(ErrorCode.RUNTIME_ERROR.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
+//    @ExceptionHandler(value = RuntimeException.class)
+//    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException runtimeException) {
+//        ApiResponse apiResponse = new ApiResponse();
+//        apiResponse.setCode(ErrorCode.RUNTIME_ERROR.getCode());
+//        apiResponse.setMessage(ErrorCode.RUNTIME_ERROR.getMessage());
+//        return ResponseEntity.badRequest().body(apiResponse);
+//    }
 
     // Custom Exception
     @ExceptionHandler(value = AppException.class)

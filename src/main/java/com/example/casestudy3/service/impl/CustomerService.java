@@ -9,6 +9,7 @@ import com.example.casestudy3.service.ICustomerService;
 import com.example.casestudy3.tranferDatas.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,15 +24,18 @@ public class CustomerService implements ICustomerService {
 
     private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
+    @Transactional
     public void createOrderByCustomer(UUID customer_id, Orders newOrders) {
         Customer customer = customerRepository.findById(customer_id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
-
+        customer.setName("Abc");
 
         newOrders.setCustomer(customer);
+//        customerRepository.save(customer);
+//        orderRepository.save(newOrder);
         customer.getOrders().add(newOrders);
 
-        customerRepository.save(customer);
+//        customerRepository.save(customer);
 
 //        Customer customer = customerRepository.findById(customerId)
 //                .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -103,11 +107,16 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public ApiResponse<List<CustomerDto>> getAll() {
-        List<Customer> customerList = customerRepository.findAll();
-        List<CustomerDto> customerDtoList = customerMapper.toDtoList(customerList);
-        ApiResponse<List<CustomerDto>> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(customerDtoList);
-        return apiResponse;
+        try {
+            List<Customer> customerList = customerRepository.findAll();
+            List<CustomerDto> customerDtoList = customerMapper.toDtoList(customerList);
+            ApiResponse<List<CustomerDto>> apiResponse = new ApiResponse<>();
+            apiResponse.setResult(customerDtoList);
+            return apiResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
